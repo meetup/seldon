@@ -13,8 +13,9 @@
 	"author": "adamd@meetup.com",
 	"license": "MIT",
 	"dependencies": {
+		"lodash": "4.5.0",
 		"toml-js": "0.0.8",
-		"marked": "0.3.5"
+		"marked": "0.3.5",
 		"handlebars": "4.0.5"
 	},
 	"bugs": {
