@@ -1,0 +1,23 @@
+{
+	"name": "seldon",
+	"version": "0.0.0",
+	"description": "CSS documentation generator inspired by Hologram",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/meetup/seldon.git"
+	},
+	"author": "adamd@meetup.com",
+	"license": "MIT",
+	"dependencies": {
+		"toml-js": "0.0.8",
+		"marked": "0.3.5"
+		"handlebars": "4.0.5"
+	},
+	"bugs": {
+		"url": "https://github.com/meetup/seldon/issues"
+	}
+}
