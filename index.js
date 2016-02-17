@@ -16,8 +16,8 @@ const tokens = {
 	exampleEnd: '```'
 }
 
-const RE_TOML = new RegExp(tokens.tomlFence+"\n(.|\n)*?\n"+tokens.tomlFence, g);
-const RE_EXAMPLE = new RegExp(tokens.exampleStart+"\n(.|\n)*?\n"+tokens.exampleEnd, g);
+const RE_TOML = new RegExp(tokens.tomlFence+"\n(.|\n)*?\n"+tokens.tomlFence, 'g');
+const RE_EXAMPLE = new RegExp(tokens.exampleStart+"\n(.|\n)*?\n"+tokens.exampleEnd, 'g');
 
 
 var DocumentView = {
@@ -53,7 +53,7 @@ function addBlock(block) {
 	if ( !category ) {
 		category = {
 			title: block.category,
-			fileName: _.snakeCase(block.category)
+			fileName: _.snakeCase(block.category),
 			blocks: []
 		}
 	}
