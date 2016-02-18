@@ -6,7 +6,7 @@ const hbs = require('handlebars');
 const _ = require('lodash');
 const escapeHtml = require('html-escape');
 
-const FILE_TEST = '../sq2/sass/modifiers/_text.scss';
+const FILE_TEST = '../sq2/sass/ui-components/_avatar.scss';
 
 marked.setOptions({
 	gfm: true,
@@ -49,8 +49,8 @@ function addBlock(block) {
 // inline with rendered/escaped output
 function renderHtmlExamples(blockDescription) {
 	return new String(
-		blockDescription.replace(/```html_example\n(.|\n)*?\n```/g, function(match, content) {
-			var example = _.trim(content.replace(/html_example/, '').replace(/```/, ''));
+		blockDescription.replace(/```html_example\n(.|\n)*?\n```/g, function(match) {
+			var example = _.trim(match.replace(/html_example/, '').replace(/```/, ''));
 
 			// TODO: replace with a handlebars template
 			return [
@@ -83,7 +83,6 @@ function parseDocComment(comment) {
 	block["category"] = C.data.category;
 	block["description"] = marked( renderHtmlExamples(C.content) );
 
-
 	addBlock(block);
 }
 
@@ -93,7 +92,7 @@ function parseDocComment(comment) {
 		comments = content.match(/\/\*doc\n(.|\n)*?\n\*\//g);
 
 		comments.forEach(parseDocComment);
-		console.dir(DocumentView['textModifiers']);
+		console.dir(DocumentView['uiComponents']);
 });
 
 
