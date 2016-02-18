@@ -44,13 +44,7 @@
 			<h2 class="text--headline"><em>Category:</em> {{@key}}</h2>
 			<dl>
 				{{#each this.blocks}}
-					<dt>Name<dt>
-					<dd>{{this.name}}</dd>
-
-					<dt>Title<dt>
-					<dd>{{this.title}}</dd>
-
-					<dt>Description<dt>
+					<dt>{{this.title}}<dt>
 					<dd>{{{this.description}}}</dd>
 				{{/each}}
 			</dl>
