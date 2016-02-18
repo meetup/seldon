@@ -6,7 +6,7 @@ const hbs = require('handlebars');
 const _ = require('lodash');
 const escapeHtml = require('html-escape');
 
-const FILE_TEST = '../sq2/sass/ui-components/_avatar.scss';
+const FILE_TEST = '../sq2/sass/ui-components/_tabs.scss';
 
 marked.setOptions({
 	gfm: true,
@@ -80,7 +80,4 @@ function parseDocComment(comment) {
 		comments = content.match(/\/\*doc\n(.|\n)*?\n\*\//g);
 
 		comments.forEach(parseDocComment);
-		console.dir(DocumentView['uiComponents']);
 });
-
-
