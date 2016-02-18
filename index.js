@@ -1,24 +1,11 @@
 const fs = require('fs');
-const readline = require('readline');
 
-const toml = require('toml-js');
+const frontmatter = require('frontmatter');
 const md = require('marked');
 const hbs = require('handlebars');
 const _ = require('lodash');
 
-const FILE_TEST = '../sq2/sass/modifiers/_size.scss';
-
-const tokens = {
-	commentStart: '/*doc',
-	commentEnd: '*/',
-	tomlFence: '---',
-	exampleStart: '```html_example',
-	exampleEnd: '```'
-}
-
-const RE_TOML = new RegExp(tokens.tomlFence+"\n(.|\n)*?\n"+tokens.tomlFence, 'g');
-const RE_EXAMPLE = new RegExp(tokens.exampleStart+"\n(.|\n)*?\n"+tokens.exampleEnd, 'g');
-
+const FILE_TEST = '../sq2/sass/modifiers/_text.scss';
 
 var DocumentView = {
 	catName: {
@@ -39,19 +26,14 @@ var DocumentView = {
 	}
 };
 
-function getExampleHtml(exampleString) {
-	return {
-		html: "lol",
-		code: "omg"
-	}
-}
 
 function addBlock(block) {
 	var catKey = _.camelCase(block.category),
 		category = DocumentView[catKey]
 
 	if ( !category ) {
-		category = {
+		console.warn('creating category: ', block.category)
+		DocumentView[catKey]  = {
 			title: block.category,
 			fileName: _.snakeCase(block.category),
 			blocks: []
@@ -63,43 +45,36 @@ function addBlock(block) {
 	console.log(DocumentView);
 }
 
-function parseDocComment(commentChunk) {
-	var block = {},
-		toml = RE_TOML.match(commentChunk)[0],
-		example = RE_EXAMPLE.match(commentChunk)[0],
-		markdown = commentChunk
-				.replace(toml, '')
-				.replace(tokens.exampleStart, '')
-				.replace(tokens.exampleEnd, '')
-				.replace(tokens.commentStart, '')
-				.replace(tokens.commentEnd);
+function getExampleHtml(exampleString) {
+	return {
+		html: "lol",
+		code: "omg"
+	}
+}
 
-	_.merge(block, toml.parse(toml));
+function parseDocComment(comment) {
+	var cleanComment = _.trim(comment.replace(/\/\*doc/, '').replace(/\*\//, ''));
+		C = frontmatter(cleanComment);
+		block = {};
+	
+	block["name"] = C.data.name;
+	block["title"] = C.data.title;
+	block["category"] = C.data.category || C.data.parent;
+	block["description"] = C.content
+	// TODO: extract html_example from C.content
 
-	block["example"] = getExampleHtml(example);
-	block["description"] = marked(markdown);
+	console.log(block);
 
-	addBlock(block);
+	//addBlock(block);
 }
 
 // replace array with real file list
 [FILE_TEST].forEach(function(file) {
+	var content = fs.readFileSync(file, "utf8"),
+		comments = content.match(/\/\*doc\n(.|\n)*?\n\*\//g);
 
-	readline.createInterface({
-		terminal: false,
-		input: fs.createReadStream(file)
-	}).on('line', function(line) {
-
-		if (_.startsWith(tokens.commentStart)) {
-			// start the chunk
-		}
-		if (_.startsWith(tokens.commentEnd)) {
-			// end the chunk
-			// parseDocComment(chunk);
-		}
-		console.log(file + ' line:', line);
-	});
-
+		parseDocComment(comments[2]);
+		//comments.forEach(parseDocComment);
 });
 
 
