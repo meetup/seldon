@@ -14,20 +14,8 @@ marked.setOptions({
 	tables: true
 })
 
-var DocumentView = {
-	catName: {
-		title: "Category Title",
-		fileName: null,
-		blocks: [
-			{
-				name: "blockName",
-				title: "Block Title",
-				category: "Category Title",
-				description: "html string from markdown"
-			}
-		]
-	}
-};
+
+var DocumentView = {};
 
 
 function addBlock(block) {
