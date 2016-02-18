@@ -5,7 +5,6 @@ const frontmatter = require('frontmatter');
 const marked = require('marked');
 const hbs = require('handlebars');
 const _ = require('lodash');
-const escapeHtml = require('html-escape');
 const recursive = require('recursive-readdir');
 
 const FILE_TEST = '../sq2/sass/ui-components/_tabs.scss';
@@ -48,8 +47,7 @@ function renderHtmlExamples(blockDescription) {
 				template = hbs.compile(TEMPL_EXAMPLE);
 
 			return template({
-				html: example,
-				escapedHtml: escapeHtml(example)
+				html: example
 			});
 		})
 	);
@@ -86,7 +84,6 @@ recursive(DIR_SRC, [], function(err, files) {
 	var template = hbs.compile(TEMPL_DOC);
 	files.forEach(handleFile);
 
-	console.log(DocumentView);
 	var doc = new Buffer(template({
 		categoryObj: DocumentView
 	}));
@@ -95,6 +92,8 @@ recursive(DIR_SRC, [], function(err, files) {
 		if(err) {
 			return console.log(err);
 		}
-		console.log("");
+		console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+		console.log("BUILD IS SUCCESS WOW OK GOOD JOB NICE");
+		console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 	});
 });
