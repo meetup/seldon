@@ -1,11 +1,18 @@
 const fs = require('fs');
 
 const frontmatter = require('frontmatter');
-const md = require('marked');
+const marked = require('marked');
 const hbs = require('handlebars');
 const _ = require('lodash');
+const escapeHtml = require('html-escape');
 
 const FILE_TEST = '../sq2/sass/modifiers/_text.scss';
+
+marked.setOptions({
+	gfm: true,
+	highlight: false,
+	tables: true
+})
 
 var DocumentView = {
 	catName: {
@@ -16,11 +23,7 @@ var DocumentView = {
 				name: "blockName",
 				title: "Block Title",
 				category: "Category Title",
-				description: "html string from markdown",
-				example: {
-					html: "html string",
-					code: "escaped html"
-				}
+				description: "html string from markdown"
 			}
 		]
 	}
@@ -28,44 +31,60 @@ var DocumentView = {
 
 
 function addBlock(block) {
-	var catKey = _.camelCase(block.category),
-		category = DocumentView[catKey]
+	var catKey = _.camelCase(block.category);
 
-	if ( !category ) {
-		console.warn('creating category: ', block.category)
+	if ( !DocumentView[catKey] ) {
 		DocumentView[catKey]  = {
 			title: block.category,
-			fileName: _.snakeCase(block.category),
+			fileName: _.snakeCase(block.category) + '.html',
 			blocks: []
 		}
 	}
 
-	category.blocks.append(block);
-
-	console.log(DocumentView);
+	DocumentView[catKey].blocks.push(block);
 }
 
-function getExampleHtml(exampleString) {
-	return {
-		html: "lol",
-		code: "omg"
-	}
+// returns a new component description string
+// with `html_example` code blocks replaced
+// inline with rendered/escaped output
+function renderHtmlExamples(blockDescription) {
+	return new String(
+		blockDescription.replace(/```html_example\n(.|\n)*?\n```/g, function(match, content) {
+			var example = _.trim(content.replace(/html_example/, '').replace(/```/, ''));
+
+			// TODO: replace with a handlebars template
+			return [
+				'<div class="doc_codeExample">',
+					'<div class="doc_codeExample-rendered">',
+						example,
+					'</div>',
+					'<div class="doc_codeExample-escaped">',
+						'<pre><code>',
+						escapeHtml(example),
+						'</pre></code>',
+					'</div>',
+				'</div>'
+			].join('');
+		})
+	);
 }
 
 function parseDocComment(comment) {
 	var cleanComment = _.trim(comment.replace(/\/\*doc/, '').replace(/\*\//, ''));
-		C = frontmatter(cleanComment);
+		C = frontmatter(cleanComment),
 		block = {};
+
+	if ( !C.data ) {
+		return;
+	}
 	
 	block["name"] = C.data.name;
 	block["title"] = C.data.title;
-	block["category"] = C.data.category || C.data.parent;
-	block["description"] = C.content
-	// TODO: extract html_example from C.content
+	block["category"] = C.data.category;
+	block["description"] = marked( renderHtmlExamples(C.content) );
 
-	console.log(block);
 
-	//addBlock(block);
+	addBlock(block);
 }
 
 // replace array with real file list
@@ -73,8 +92,8 @@ function parseDocComment(comment) {
 	var content = fs.readFileSync(file, "utf8"),
 		comments = content.match(/\/\*doc\n(.|\n)*?\n\*\//g);
 
-		parseDocComment(comments[2]);
-		//comments.forEach(parseDocComment);
+		comments.forEach(parseDocComment);
+		console.dir(DocumentView['textModifiers']);
 });
 
 
