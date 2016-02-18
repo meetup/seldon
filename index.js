@@ -1,12 +1,15 @@
 const fs = require('fs');
+const path = require('path');
 
 const frontmatter = require('frontmatter');
 const marked = require('marked');
 const hbs = require('handlebars');
 const _ = require('lodash');
 const escapeHtml = require('html-escape');
+const recursive = require('recursive-readdir');
 
 const FILE_TEST = '../sq2/sass/ui-components/_tabs.scss';
+const DIR_SRC = '../sq2/sass/';
 
 const TEMPL_EXAMPLE = fs.readFileSync('templates/example.hbs', "utf8");
 
@@ -68,11 +71,17 @@ function parseDocComment(comment) {
 	addBlock(block);
 }
 
-// replace array with real file list
-[FILE_TEST].forEach(function(file) {
+function handleFile(file) {
+	console.log("READING FILE: ", file);
 	var content = fs.readFileSync(file, "utf8"),
 		comments = content.match(/\/\*doc\n(.|\n)*?\n\*\//g);
 
+	if ( comments ) {
 		comments.forEach(parseDocComment);
-		console.dir(DocumentView['uiComponents'].blocks);
+	}
+}
+
+recursive(DIR_SRC, [], function(err, files) {
+	files.forEach(handleFile);
+	console.log(DocumentView);
 });
