@@ -43,7 +43,7 @@ function addBlock(block) {
 function renderHtmlExamples(blockDescription) {
 	return new String(
 		blockDescription.replace(/```html_example\n(.|\n)*?\n```/g, function(match) {
-			var example = _.trim(match.replace(/html_example/, '').replace(/```/, '')),
+			var example = _.trim(match.replace(/```html_example/, '').replace(/```/, '')),
 				template = hbs.compile(TEMPL_EXAMPLE);
 
 			return template({
