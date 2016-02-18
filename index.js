@@ -8,6 +8,8 @@ const escapeHtml = require('html-escape');
 
 const FILE_TEST = '../sq2/sass/ui-components/_tabs.scss';
 
+const TEMPL_EXAMPLE = fs.readFileSync('templates/example.hbs', "utf8");
+
 marked.setOptions({
 	gfm: true,
 	highlight: false,
@@ -38,21 +40,13 @@ function addBlock(block) {
 function renderHtmlExamples(blockDescription) {
 	return new String(
 		blockDescription.replace(/```html_example\n(.|\n)*?\n```/g, function(match) {
-			var example = _.trim(match.replace(/html_example/, '').replace(/```/, ''));
+			var example = _.trim(match.replace(/html_example/, '').replace(/```/, '')),
+				template = hbs.compile(TEMPL_EXAMPLE);
 
-			// TODO: replace with a handlebars template
-			return [
-				'<div class="doc_codeExample">',
-					'<div class="doc_codeExample-rendered">',
-						example,
-					'</div>',
-					'<div class="doc_codeExample-escaped">',
-						'<pre><code>',
-						escapeHtml(example),
-						'</pre></code>',
-					'</div>',
-				'</div>'
-			].join('');
+			return template({
+				html: example,
+				escapedHtml: escapeHtml(example)
+			});
 		})
 	);
 }
@@ -80,4 +74,5 @@ function parseDocComment(comment) {
 		comments = content.match(/\/\*doc\n(.|\n)*?\n\*\//g);
 
 		comments.forEach(parseDocComment);
+		console.dir(DocumentView['uiComponents'].blocks);
 });
