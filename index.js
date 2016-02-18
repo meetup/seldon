@@ -10,8 +10,10 @@ const recursive = require('recursive-readdir');
 
 const FILE_TEST = '../sq2/sass/ui-components/_tabs.scss';
 const DIR_SRC = '../sq2/sass/';
+const DIR_TARGET = './'
 
 const TEMPL_EXAMPLE = fs.readFileSync('templates/example.hbs', "utf8");
+const TEMPL_DOC = fs.readFileSync('templates/index.hbs', "utf8");
 
 marked.setOptions({
 	gfm: true,
@@ -29,7 +31,6 @@ function addBlock(block) {
 	if ( !DocumentView[catKey] ) {
 		DocumentView[catKey]  = {
 			title: block.category,
-			fileName: _.snakeCase(block.category) + '.html',
 			blocks: []
 		}
 	}
@@ -82,6 +83,18 @@ function handleFile(file) {
 }
 
 recursive(DIR_SRC, [], function(err, files) {
+	var template = hbs.compile(TEMPL_DOC);
 	files.forEach(handleFile);
+
 	console.log(DocumentView);
+	var doc = new Buffer(template({
+		categoryObj: DocumentView
+	}));
+
+	fs.writeFile(DIR_TARGET+'doc.html', doc, function(err) {
+		if(err) {
+			return console.log(err);
+		}
+		console.log("");
+	});
 });
