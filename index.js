@@ -34,6 +34,7 @@ function addBlock(block) {
 		}
 	}
 
+	console.log("Adding block: ", block.title);
 	DocumentView[catKey].blocks.push(block);
 }
 
@@ -92,8 +93,8 @@ recursive(DIR_SRC, [], function(err, files) {
 		if(err) {
 			return console.log(err);
 		}
-		console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-		console.log("BUILD IS SUCCESS WOW OK GOOD JOB NICE");
-		console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+		console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+		console.log("BUILD IS SUCCESS OK GOOD JOB NICE");
+		console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 	});
 });
