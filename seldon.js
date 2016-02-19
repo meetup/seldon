@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
+const colors = require('colors');
 const frontmatter = require('frontmatter');
 const marked = require('marked');
 const hbs = require('handlebars');
@@ -34,7 +35,7 @@ function addBlock(block) {
 		}
 	}
 
-	console.log("Adding block: ", block.title);
+	console.log("Adding component: ".yellow, block.title);
 	DocumentView[catKey].blocks.push(block);
 }
 
@@ -72,12 +73,14 @@ function parseDocComment(comment) {
 }
 
 function handleFile(file) {
-	console.log("READING FILE: ", file);
+	console.log("\nREADING FILE: ".magenta, file);
 	var content = fs.readFileSync(file, "utf8"),
 		comments = content.match(/\/\*doc\n(.|\n)*?\n\*\//g);
 
 	if ( comments ) {
 		comments.forEach(parseDocComment);
+	} else {
+		console.warn("No documentation comments found.".italic);
 	}
 }
 
@@ -93,8 +96,8 @@ recursive(DIR_SRC, [], function(err, files) {
 		if(err) {
 			return console.log(err);
 		}
-		console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-		console.log("BUILD IS SUCCESS OK GOOD JOB NICE");
-		console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+		console.log('\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'.rainbow);
+		console.log("BUILD IS SUCCESS OK GOOD JOB NICE".cyan);
+		console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'.rainbow);
 	});
 });
