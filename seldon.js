@@ -73,7 +73,7 @@ function parseDocComment(comment) {
 }
 
 function handleFile(file) {
-	console.log("\nREADING FILE: ".magenta, file);
+	console.log("\nFILE: ".magenta, file);
 	var content = fs.readFileSync(file, "utf8"),
 		comments = content.match(/\/\*doc\n(.|\n)*?\n\*\//g);
 
