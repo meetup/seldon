@@ -1,5 +1,7 @@
 # seldon
-Nodejs CSS documentation generator inspired by [hologram](http://trulia.github.io/hologram/)
+Nodejs CSS documentation generator inspired by [hologram](http://trulia.github.io/hologram/).
+
+**This is a work in progress.** This project currently works as a simple node script, but don't expect _unicorns and rainbows_ (yet).
 
 ## 1. Use structured comments in your CSS
 
