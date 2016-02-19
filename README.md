@@ -3,8 +3,7 @@ Nodejs CSS documentation generator inspired by [hologram](http://trulia.github.i
 
 ## 1. Use structured comments in your CSS
 
-```css
-/*doc
+<pre><code>/*doc
 ---
 title: My Component Title
 name: myUniqueComponentName
@@ -22,8 +21,7 @@ Github-flavored markdown supported.
 	<li>Escaped html will appear under the example</li>
 </ol>
 ```
-*/
-```
+*/</code></pre>
 
 ## 2. Seldon creates a view for handlebars
 
