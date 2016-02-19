@@ -14,12 +14,12 @@ category: My Category Name
 Github-flavored markdown supported.
 
 ```html_example
-<p>This is a special fenced code block that does neat things:</p>
-<ol>
-	<li>Put example code here</li>
-	<li>It will be rendered directly to static documentation</li>
-	<li>Escaped html will appear under the example</li>
-</ol>
+&lt;p&gt;This is a special fenced code block that does neat things:&lt;p&gt;
+&lt;ol&gt;
+	&lt;li&gt;Put example code here&lt;li&gt;
+	&lt;li&gt;It will be rendered directly to static documentation&lt;li&gt;
+	&lt;li&gt;Escaped html will appear under the example&lt;li&gt;
+&lt;ol&gt;
 ```
 */</code></pre>
 
