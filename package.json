@@ -2,7 +2,7 @@
 	"name": "seldon",
 	"version": "0.0.0",
 	"description": "CSS documentation generator inspired by Hologram",
-	"main": "index.js",
+	"main": "seldon.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
