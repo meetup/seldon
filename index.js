@@ -16,7 +16,7 @@ const TEMPL_DOC = fs.readFileSync('templates/index.hbs', "utf8");
 
 marked.setOptions({
 	gfm: true,
-	breaks: true,
+	breaks: false,
 	tables: true
 })
 

@@ -1,0 +1,50 @@
+.doc_category {
+	margin-top: 16px;
+	margin-bottom: 32px;
+}
+
+.doc_category-title {
+	font-weight: bold !important;
+}
+
+.doc_block {
+	margin-bottom: 32px;
+}
+
+.doc_block-title {
+	font-size: 18px;
+	font-weight: bold;
+	display: block;
+	padding: 8px 4px;
+	border-top: 2px solid #bbb;
+	margin: 24px auto 16px auto;
+	background: rgba(0,0,0,0.02);
+}
+
+.doc_block-desc h2 {
+	margin-bottom: 8px;
+}
+.doc_block-desc table {
+	margin-bottom: 16px;
+}
+
+.doc_example {
+	border: 2px dashed #ccc;
+	margin-bottom: 32px;
+	margin-top: 16px;
+}
+
+.doc_example-rendered,
+.doc_example-escaped {
+	padding: 2px 4px;
+}
+.doc_example-rendered {
+}
+
+.doc_example-escaped {
+	max-height: 80vh;
+}
+
+.doc_example-escaped pre {
+	margin: 4px auto 2px;
+}
