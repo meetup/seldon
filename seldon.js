@@ -8,7 +8,7 @@ const hbs = require('handlebars');
 const _ = require('lodash');
 const recursive = require('recursive-readdir');
 
-const FILE_TEST = '../sq2/sass/ui-components/_tabs.scss';
+// TODO: read from a config.json to set these
 const DIR_SRC = '../sq2/sass/';
 const DIR_TARGET = './'
 
