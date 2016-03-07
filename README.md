@@ -25,7 +25,32 @@ Github-flavored markdown supported.
 ```
 */</code></pre>
 
-## 2. Seldon creates a view for handlebars
+## 2. Create a Seldon configuration file
+
+#### config.json
+```json
+{
+   "source": "../sq2/sass/",
+   "destination": "build/",
+   "templates": {
+      "layout": "templates/layout.hbs",
+      "example": "templates/example.hbs"
+   }
+}
+```
+
+#### Running Seldon
+
+`npm install seldon --save-dev`
+
+```js
+const Seldon = require('seldon');
+
+Seldon.compile('./config.json');
+```
+
+
+## 3. Seldon creates a view for handlebars
 
 ```js
 {
@@ -42,5 +67,5 @@ Github-flavored markdown supported.
 }
 ```
 
-## 3. Go forth and template
+## 4. Go forth and template
 You can write your own handlebars template to use with the data provided by `seldon`.
