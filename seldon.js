@@ -8,13 +8,6 @@ const hbs = require('handlebars');
 const _ = require('lodash');
 const recursive = require('recursive-readdir');
 
-// TODO: read from a config.json to set these
-const DIR_SRC = '../sq2/sass/';
-const DIR_TARGET = './'
-
-const TEMPL_EXAMPLE = fs.readFileSync('templates/example.hbs', "utf8");
-const TEMPL_DOC = fs.readFileSync('templates/index.hbs', "utf8");
-
 marked.setOptions({
 	gfm: true,
 	breaks: false,
@@ -22,7 +15,8 @@ marked.setOptions({
 })
 
 
-var DocumentView = {};
+var DocumentView = {}; // view for hbs templates
+var templates = {};    // hbs template files
 
 
 function addBlock(block) {
@@ -46,7 +40,7 @@ function renderHtmlExamples(blockDescription) {
 	return new String(
 		blockDescription.replace(/```html_example\n(.|\n)*?\n```/g, function(match) {
 			var example = _.trim(match.replace(/```html_example/, '').replace(/```/, '')),
-				template = hbs.compile(TEMPL_EXAMPLE);
+				template = hbs.compile(templates.example);
 
 			return template({
 				html: example
@@ -84,20 +78,42 @@ function handleFile(file) {
 	}
 }
 
-recursive(DIR_SRC, [], function(err, files) {
-	var template = hbs.compile(TEMPL_DOC);
-	files.forEach(handleFile);
+function parseFiles( src, dest ) {
+	recursive(src, [], function(err, files) {
+		var template = hbs.compile(templates.layout);
+		files.forEach(handleFile);
 
-	var doc = new Buffer(template({
-		categoryObj: DocumentView
-	}));
+		var doc = new Buffer(template({
+			categoryObj: DocumentView
+		}));
 
-	fs.writeFile(DIR_TARGET+'doc.html', doc, function(err) {
-		if(err) {
-			return console.log(err);
-		}
-		console.log('\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'.rainbow);
-		console.log("BUILD IS SUCCESS OK GOOD JOB NICE".cyan);
-		console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'.rainbow);
+		fs.writeFile(dest + 'doc.html', doc, function(err) {
+			if(err) {
+				return console.log(err);
+			}
+			console.log('\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'.rainbow);
+			console.log("BUILD IS SUCCESS OK GOOD JOB NICE".cyan);
+			console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'.rainbow);
+		});
 	});
-});
+}
+
+
+module.exports = {
+
+	//
+	// Pass your `config.yml` file to compile documentation
+	//
+	compile: function( configPath ) {
+		var config = fs.readFileSync( configPath, "utf8" );
+
+		if ( config ) {
+			var C = frontmatter(config).data;
+
+			templates.layout = fs.readFileSync(C.templates.layout, "utf8");
+			templates.example = fs.readFileSync(C.templates.example, "utf8");
+
+			parseFiles( C.source, C.destination );
+		}
+	}
+}
