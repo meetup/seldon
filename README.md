@@ -25,7 +25,7 @@ Github-flavored markdown supported.
 ```
 */</code></pre>
 
-## 2. Create a Seldon configuration file
+## 2. Create a Seldon config file
 
 #### config.json
 ```json
