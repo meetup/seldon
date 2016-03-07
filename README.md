@@ -69,3 +69,13 @@ Seldon.compile('./config.json');
 
 ## 4. Go forth and template
 You can write your own handlebars template to use with the data provided by `seldon`.
+
+-----------------------------------------------
+
+#### Seldon?
+This project is named after [Hari Seldon](https://en.wikipedia.org/wiki/Hari_Seldon), a
+fictional character in Isaac Asimov's [Foundation](https://en.wikipedia.org/wiki/Foundation_series).
+
+In the series, Seldon is a pivotal figure who appears only in _hologram_ form.
+
+Special thanks to the good folks at Trulia who wrote [hologram](http://trulia.github.io/hologram/), the tool that inspired this project.
