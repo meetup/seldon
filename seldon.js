@@ -102,13 +102,13 @@ function parseFiles( src, dest ) {
 module.exports = {
 
 	//
-	// Pass your `config.yml` file to compile documentation
+	// Pass the path to your `config.json` file to compile documentation
 	//
 	compile: function( configPath ) {
 		var config = fs.readFileSync( configPath, "utf8" );
 
 		if ( config ) {
-			var C = frontmatter(config).data;
+			var C = JSON.parse(config);
 
 			templates.layout = fs.readFileSync(C.templates.layout, "utf8");
 			templates.example = fs.readFileSync(C.templates.example, "utf8");
