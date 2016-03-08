@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fse = require('fs-extra');
 const path = require('path');
 
 const colors = require('colors');
@@ -6,7 +6,6 @@ const frontmatter = require('frontmatter');
 const marked = require('marked');
 const hbs = require('handlebars');
 const _ = require('lodash');
-const recursive = require('recursive-readdir');
 
 marked.setOptions({
 	gfm: true,
@@ -68,7 +67,7 @@ function parseDocComment(comment) {
 
 function handleFile(file) {
 	console.log("\nFILE: ".magenta, file);
-	var content = fs.readFileSync(file, "utf8"),
+	var content = fse.readFileSync(file, "utf8"),
 		comments = content.match(/\/\*doc\n(.|\n)*?\n\*\//g);
 
 	if ( comments ) {
@@ -79,23 +78,31 @@ function handleFile(file) {
 }
 
 function parseFiles( src, dest ) {
-	recursive(src, [], function(err, files) {
-		var template = hbs.compile(templates.layout);
-		files.forEach(handleFile);
+	var files = [],
+		template = hbs.compile(templates.layout);
 
-		var doc = new Buffer(template({
-			categoryObj: DocumentView
-		}));
-
-		fs.writeFile(dest + 'doc.html', doc, function(err) {
-			if(err) {
-				return console.log(err);
+	fse.walk( src )
+		.on('data', function(file) {
+			if ( fse.statSync(file.path).isFile() ) {
+				files.push(file.path)
 			}
-			console.log('\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'.rainbow);
-			console.log("BUILD IS SUCCESS OK GOOD JOB NICE".cyan);
-			console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'.rainbow);
-		});
-	});
+		})
+		.on('end', function() {
+			files.forEach(handleFile);
+
+			var doc = new Buffer(template({
+				categoryObj: DocumentView
+			}));
+
+			fse.writeFile(dest + 'doc.html', doc, function(err) {
+				if(err) {
+					return console.log(err);
+				}
+				console.log('\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'.rainbow);
+				console.log("BUILD IS SUCCESS OK GOOD JOB NICE".cyan);
+				console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'.rainbow);
+			});
+		})
 }
 
 
@@ -105,15 +112,30 @@ module.exports = {
 	// Pass the path to your `config.json` file to compile documentation
 	//
 	compile: function( configPath ) {
-		var config = fs.readFileSync( configPath, "utf8" );
+		var config = fse.readFileSync( configPath, "utf8" );
 
 		if ( config ) {
 			var C = JSON.parse(config);
 
-			templates.layout = fs.readFileSync(C.templates.layout, "utf8");
-			templates.example = fs.readFileSync(C.templates.example, "utf8");
+			// if the destination dir doesn't exist, create it
+			fse.ensureDirSync(C.destination);
 
+			// load hbs templates into global `templates` obj
+			templates.layout = fse.readFileSync(C.templates.layout, "utf8");
+			templates.example = fse.readFileSync(C.templates.example, "utf8");
+
+			// read all files & populate DocumentView
 			parseFiles( C.source, C.destination );
+
+			// if a static assets dir has been specified,
+			// copy that dir to the build destination
+			if ( C.assets ) {
+				try {
+					fse.copySync( C.assets, C.destination );
+				} catch (err) {
+					console.error('\nCould not copy static assets dir to ' + C.destination + "\n" + err.message + "\n")
+				}
+			}
 		}
 	}
 }
