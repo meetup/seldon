@@ -30,36 +30,25 @@ Github-flavored markdown supported.
 #### config.json
 ```json
 {
-	/**
-	* "source"
-	* any dir containing files with structured comments
-	*/
    "source": "../sq2/sass/",
-
-	/**
-	* "destination"
-	* target directory for built docs
-	* (will be created if it doesn't exist)
-	*/
    "destination": "build/",
-
-	/**
-	* "assets"
-	* static assets you'd like to copy into your `destination` dir
-	* (files will be copied to the root `destination` dir)
-	*/
 	"assets": "templates/static/",
-
-	/**
-	* "templates"
-	* location of your handlebars templates
-	*/
    "templates": {
       "layout": "templates/layout.hbs",     // main layout (base template)
       "example": "templates/example.hbs"    // template for rendered `html_example` blocks
    }
 }
 ```
+
+Property               | Description
+---------------------- | --------------------------------
+`"source"`             | any dir containing files with structured comments
+`"destination"`        | target dir for built docs (will be created if it doesn't exist)
+`"assets"`             | static assets you'd like to copy into the `destination` dir (files will be copied to the root of `destination`)
+`"templates"`          | location of your handlebars templates
+`"templates.layout"`   | main handlebars template
+`"templates.example"`  | template used to render `html_example` blocks
+
 
 #### Running Seldon
 
