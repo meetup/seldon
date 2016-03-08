@@ -1,6 +1,6 @@
 {
   "name": "seldon",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "CSS documentation generator inspired by Hologram",
   "main": "seldon.js",
   "scripts": {
@@ -11,10 +11,10 @@
     "url": "git://github.com/meetup/seldon.git"
   },
   "author": "adamd@meetup.com",
-	"license": {
-		"type": "MIT",
-		"url": "https://github.com/meetup/seldon/blob/master/LICENSE"
-	},
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/meetup/seldon/blob/master/LICENSE"
+  },
   "dependencies": {
     "colors": "1.1.2",
     "lodash": "4.5.0",
