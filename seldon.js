@@ -21,6 +21,8 @@ var templates = {};    // hbs template files
 function addBlock(block) {
 	var catKey = _.camelCase(block.category);
 
+	if ( catKey == "" ) return;
+
 	if ( !DocumentView[catKey] ) {
 		DocumentView[catKey]  = {
 			title: block.category,
