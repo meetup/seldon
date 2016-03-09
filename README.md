@@ -45,7 +45,7 @@ Github-flavored markdown supported.
 $ npm install seldon --save-dev
 ```
 
-##### Using as a module.
+##### Use as a node module
 
 ```js
 const Seldon = require('seldon');
@@ -53,7 +53,7 @@ const Seldon = require('seldon');
 Seldon.compile('./config.json');
 ```
 
-##### From the command line
+##### Use from the command line
 
 ```sh
 $ node seldon.js /path/to/config/config.json
