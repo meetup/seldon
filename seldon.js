@@ -14,24 +14,57 @@ marked.setOptions({
 })
 
 
-var DocumentView = {}; // view for hbs templates
-var templates = {};    // hbs template files
+var DocumentView = {};    // view for hbs templates
+var BlockCategories = {}; // { blockName: 'category name', ... }
+var SubComponents = [];   // temporary store for subcomponents
+var templates = {};       // hbs template files
 
+
+function addSubComponent(block) {
+	var category = BlockCategories[block.parent];
+
+	console.log('-----------------------------'.red);
+	console.dir(block.parent);
+	console.log('-----------------------------'.white);
+	console.dir(category);
+	console.log('-----------------------------'.cyan);
+
+	/*
+	 *if ( parent ) {
+	 *   DocumentView[_.camelCase(parent.category)].blocks.forEach(function(b) {
+	 *      if ( b.name === parent ) {
+	 *         b.children.push(block);
+	 *      }
+	 *   });
+	 *}
+	 */
+}
 
 function addBlock(block) {
 	var catKey = _.camelCase(block.category);
 
-	if ( catKey == "" ) return;
+	// this is a sub-component;
+	// save it for last
+	if ( block.parent ) {
+		SubComponents.push(block);
 
-	if ( !DocumentView[catKey] ) {
-		DocumentView[catKey]  = {
-			title: block.category,
-			blocks: []
+	// this is a category-level block
+	} else {
+		// create the category if it doesn't exist,
+		// then add the block to the category
+		if ( !DocumentView[catKey] ) {
+			DocumentView[catKey]  = {
+				title: block.category,
+				blocks: []
+			}
 		}
-	}
 
-	console.log("Adding component: ".yellow, block.title);
-	DocumentView[catKey].blocks.push(block);
+		console.log("Adding component: ".yellow, block.title);
+		DocumentView[catKey].blocks.push(block);
+
+		// map the block name to the category for subcomponents
+		BlockCategories[block.name] = block.category;
+	}
 }
 
 // returns a new component description string
@@ -63,6 +96,8 @@ function parseDocComment(comment) {
 	block["title"] = C.data.title;
 	block["category"] = C.data.category;
 	block["description"] = marked( renderHtmlExamples(C.content) );
+	block["parent"] = C.data.parent;
+	block["children"] = [];
 
 	addBlock(block);
 }
@@ -91,6 +126,10 @@ function parseFiles( src, dest ) {
 		})
 		.on('end', function() {
 			files.forEach(handleFile);
+
+			console.dir(BlockCategories);
+
+			SubComponents.forEach(addSubComponent);
 
 			var doc = new Buffer(template({
 				categoryObj: DocumentView
