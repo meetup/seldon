@@ -41,12 +41,22 @@ Github-flavored markdown supported.
 
 #### Running Seldon
 
-`npm install seldon --save-dev`
+```sh
+$ npm install seldon --save-dev
+```
+
+##### Using as a module.
 
 ```js
 const Seldon = require('seldon');
 
 Seldon.compile('./config.json');
+```
+
+##### From the command line
+
+```sh
+$ node seldon.js /path/to/config/config.json
 ```
 
 

@@ -12,7 +12,7 @@ marked.setOptions({
 	gfm: true,
 	breaks: false,
 	tables: true
-})
+});
 
 
 var DocumentView = {}; // view for hbs templates
@@ -98,22 +98,30 @@ function parseFiles( src, dest ) {
 	});
 }
 
-
-module.exports = {
+function compile(configPath) {
 
 	//
 	// Pass the path to your `config.json` file to compile documentation
 	//
-	compile: function( configPath ) {
-		var config = fs.readFileSync( configPath, "utf8" );
+	var config = fs.readFileSync( configPath, "utf8" );
 
-		if ( config ) {
-			var C = JSON.parse(config);
+	if ( config ) {
+		var C = JSON.parse(config);
 
-			templates.layout = fs.readFileSync(C.templates.layout, "utf8");
-			templates.example = fs.readFileSync(C.templates.example, "utf8");
+		templates.layout = fs.readFileSync(C.templates.layout, "utf8");
+		templates.example = fs.readFileSync(C.templates.example, "utf8");
 
-			parseFiles( C.source, C.destination );
-		}
+		parseFiles( C.source, C.destination );
 	}
 }
+
+//Run from command line.
+if (process.argv[2]) {
+	compile(process.argv[2]);
+}
+
+
+module.exports = {
+	compile: compile
+}
+
