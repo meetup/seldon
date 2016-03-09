@@ -32,12 +32,22 @@ Github-flavored markdown supported.
 {
    "source": "../sq2/sass/",
    "destination": "build/",
+	"assets": "templates/static/",
    "templates": {
       "layout": "templates/layout.hbs",
       "example": "templates/example.hbs"
    }
 }
 ```
+
+Property               | Description
+---------------------- | --------------------------------
+`source`                | any dir containing files with structured comments
+`destination`           | target dir for built docs (will be created if it doesn't exist)
+`assets`                | static assets you'd like to copy into the `destination` dir (files will be copied to the root of `destination`)
+`templates["layout"]`   | main handlebars template
+`templates["example"]`  | template used to render `html_example` blocks
+
 
 #### Running Seldon
 
