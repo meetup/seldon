@@ -72,6 +72,7 @@ $ node seldon.js /path/to/config/config.json
 
 ## 3. Seldon creates a view for handlebars
 
+
 ```js
 {
 	myCategoryName: {
@@ -81,6 +82,18 @@ $ node seldon.js /path/to/config/config.json
 				title: "My Component Title",
 				name: "myUniqueComponentName",
 				description: "(html string compiled from markdown, including html_example blocks)"
+			},
+			{
+				title: "My Other Component in this category",
+				name: "myOtherComponent",
+				description: "(html string compiled from markdown, including html_example blocks)",
+				children: [ /* nesting is supported with the `parent` convention from hologram docs */
+					{
+						title: "My child component",
+						name: "childComponent",
+						description: "(html string compiled from markdown, including html_example blocks)",
+					}
+				]
 			}
 		]
 	}
