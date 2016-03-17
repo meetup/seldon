@@ -11,7 +11,7 @@ marked.setOptions({
 	gfm: true,
 	breaks: false,
 	tables: true
-})
+});
 
 
 var DocumentView = {}; // view for hbs templates
@@ -107,37 +107,45 @@ function parseFiles( src, dest ) {
 		})
 }
 
-
-module.exports = {
+function compile(configPath) {
 
 	//
 	// Pass the path to your `config.json` file to compile documentation
 	//
-	compile: function( configPath ) {
-		var config = fse.readFileSync( configPath, "utf8" );
+	var config = fse.readFileSync( configPath, "utf8" );
 
-		if ( config ) {
-			var C = JSON.parse(config);
+	if ( config ) {
+		var C = JSON.parse(config);
 
-			// if the destination dir doesn't exist, create it
-			fse.ensureDirSync(C.destination);
+		// if the destination dir doesn't exist, create it
+		fse.ensureDirSync(C.destination);
 
-			// load hbs templates into global `templates` obj
-			templates.layout = fse.readFileSync(C.templates.layout, "utf8");
-			templates.example = fse.readFileSync(C.templates.example, "utf8");
+		// load hbs templates into global `templates` obj
+		templates.layout = fse.readFileSync(C.templates.layout, "utf8");
+		templates.example = fse.readFileSync(C.templates.example, "utf8");
 
-			// read all files & populate DocumentView
-			parseFiles( C.source, C.destination );
+		// read all files & populate DocumentView
+		parseFiles( C.source, C.destination );
 
-			// if a static assets dir has been specified,
-			// copy that dir to the build destination
-			if ( C.assets ) {
-				try {
-					fse.copySync( C.assets, C.destination );
-				} catch (err) {
-					console.error('\nCould not copy static assets dir to ' + C.destination + "\n" + err.message + "\n")
-				}
+		// if a static assets dir has been specified,
+		// copy that dir to the build destination
+		if ( C.assets ) {
+			try {
+				fse.copySync( C.assets, C.destination );
+			} catch (err) {
+				console.error('\nCould not copy static assets dir to ' + C.destination + "\n" + err.message + "\n")
 			}
 		}
 	}
 }
+
+//Run from command line.
+if (process.argv[2]) {
+	compile(process.argv[2]);
+}
+
+
+module.exports = {
+	compile: compile
+}
+
