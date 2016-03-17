@@ -14,15 +14,39 @@ marked.setOptions({
 })
 
 
-var DocumentView = {}; // view for hbs templates
-var templates = {};    // hbs template files
+var DocumentView = {};   // view for hbs templates
+var templates = {};      // hbs template files
+var childBlocks = [];    // contains block children; processed last
 
+
+function addChildBlocks(blocks) {
+	var attachChild = function(parent, child) {
+		if ( !_.has(parent, 'children') ) parent.children = [];
+		parent.children.push(child);
+	}
+
+	blocks.forEach(function(block) {
+
+		// look for the parent block in every category
+		_.forOwn(DocumentView, function(category) {
+
+			category.blocks.forEach(function(categoryBlock) {
+				if ( block.parent == categoryBlock.name ) {
+					attachChild(categoryBlock, block);
+				}
+			});
+
+		});
+
+	})
+};
 
 function addBlock(block) {
 	var catKey = _.camelCase(block.category);
 
 	if ( catKey == "" ) return;
 
+	// create the category if it doesn't already exist
 	if ( !DocumentView[catKey] ) {
 		DocumentView[catKey]  = {
 			title: block.category,
@@ -62,9 +86,14 @@ function parseDocComment(comment) {
 	block["name"] = C.data.name;
 	block["title"] = C.data.title;
 	block["category"] = C.data.category;
+	block["parent"] = C.data.parent;
 	block["description"] = marked( renderHtmlExamples(C.content) );
 
-	addBlock(block);
+	if ( !block.category && block.parent ) {
+		childBlocks.push(block); // this block belongs to another block
+	} else if ( block.category ) {
+		addBlock(block); // this is a category-level block
+	}
 }
 
 function handleFile(file) {
@@ -90,7 +119,9 @@ function parseFiles( src, dest ) {
 			}
 		})
 		.on('end', function() {
+
 			files.forEach(handleFile);
+			addChildBlocks(childBlocks);
 
 			var doc = new Buffer(template({
 				categoryObj: DocumentView
