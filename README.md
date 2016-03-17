@@ -51,12 +51,22 @@ Property               | Description
 
 #### Running Seldon
 
-`npm install seldon --save-dev`
+```sh
+$ npm install seldon --save-dev
+```
+
+##### Use as a node module
 
 ```js
 const Seldon = require('seldon');
 
 Seldon.compile('./config.json');
+```
+
+##### Use from the command line
+
+```sh
+$ node seldon.js /path/to/config/config.json
 ```
 
 
