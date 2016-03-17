@@ -20,14 +20,14 @@ var childBlocks = [];    // contains block children; processed last
 
 
 function addChildBlocks(blocks) {
+
 	var attachChild = function(parent, child) {
 		if ( !_.has(parent, 'children') ) parent.children = [];
 		parent.children.push(child);
 	}
 
+	// look for the parent block in every category
 	blocks.forEach(function(block) {
-
-		// look for the parent block in every category
 		_.forOwn(DocumentView, function(category) {
 
 			category.blocks.forEach(function(categoryBlock) {
@@ -37,8 +37,7 @@ function addChildBlocks(blocks) {
 			});
 
 		});
-
-	})
+	});
 };
 
 function addBlock(block) {
