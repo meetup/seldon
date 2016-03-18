@@ -75,8 +75,9 @@ $ node seldon.js /path/to/config/config.json
 
 ```js
 {
-	myCategoryName: {
-		title: "Category Title",
+	myCategory: {
+		title: "My Category",
+		name: myCategory,
 		blocks: [ //components filed under this category
 			{
 				title: "My Component Title",

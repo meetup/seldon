@@ -49,6 +49,7 @@ function addBlock(block) {
 	if ( !DocumentView[catKey] ) {
 		DocumentView[catKey]  = {
 			title: block.category,
+			name: catKey,
 			blocks: []
 		}
 	}
