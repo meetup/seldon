@@ -161,11 +161,13 @@ function compile(configPath) {
 		// if a static assets dir has been specified,
 		// copy that dir to the build destination
 		if ( C.assets ) {
-			try {
-				fse.copySync( C.assets, C.destination );
-			} catch (err) {
-				console.error('\nCould not copy static assets dir to ' + C.destination + "\n" + err.message + "\n")
-			}
+			C.assets.forEach(function(assetDir) {
+				try {
+					fse.copySync( assetDir, C.destination );
+				} catch (err) {
+					console.error('\nCould not copy static assets dir to ' + C.destination + "\n" + err.message + "\n")
+				}
+			})
 		}
 	}
 }

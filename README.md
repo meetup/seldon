@@ -30,13 +30,15 @@ Github-flavored markdown supported.
 #### config.json
 ```json
 {
-   "source": "../sq2/sass/",
-   "destination": "build/",
-	"assets": "templates/static/",
-   "templates": {
-      "layout": "templates/layout.hbs",
-      "example": "templates/example.hbs"
-   }
+	"source": "../sq2/sass/",
+	"destination": "build/",
+	"assets": [
+		"templates/static/"
+	],
+	"templates": {
+		"layout": "templates/layout.hbs",
+		"example": "templates/example.hbs"
+	}
 }
 ```
 
