@@ -31,7 +31,7 @@ Github-flavored markdown supported.
 ```json
 {
 	"source": "../sq2/sass/",
-	"destination": "build/",
+	"destination": "build/index.html",
 	"assets": [
 		"templates/static/"
 	],

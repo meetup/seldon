@@ -1,6 +1,6 @@
 {
   "name": "seldon",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "CSS documentation generator inspired by Hologram",
   "main": "seldon.js",
   "scripts": {
