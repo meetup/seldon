@@ -127,7 +127,7 @@ function parseFiles( src, dest ) {
 				categoryObj: DocumentView
 			}));
 
-			fse.writeFile(dest, doc, function(err) {
+			fse.writeFile(dest + 'doc.html', doc, function(err) {
 				if(err) {
 					return console.log(err);
 				}
