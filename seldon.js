@@ -79,8 +79,8 @@ function parseDocComment(comment, file) {
 		block = {};
 
 	if ( !C.data ) {
-		console.error('\nERROR: no data found in frontmatter. Make sure all comments have a description in addition to frontmatter.'.red)
-		console.log("\n\t@ ".red, file);
+		console.error('ERROR: no data found in frontmatter. Make sure all comments have a description in addition to frontmatter.'.red)
+		console.log("\t@ ".red, file);
 		return;
 	}
 	
