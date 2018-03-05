@@ -54,7 +54,6 @@ function addBlock(block) {
 		}
 	}
 
-	console.log("Adding component: ".yellow, block.title);
 	DocumentView[catKey].blocks.push(block);
 }
 
@@ -74,12 +73,14 @@ function renderHtmlExamples(blockDescription) {
 	);
 }
 
-function parseDocComment(comment) {
+function parseDocComment(comment, file) {
 	var cleanComment = _.trim(comment.replace(/\/\*doc/, '').replace(/\*\//, ''));
 		C = frontmatter(cleanComment),
 		block = {};
 
 	if ( !C.data ) {
+		console.error('\nERROR: no data found in frontmatter. Make sure all comments have a description in addition to frontmatter.'.red)
+		console.log("\n\t@ ".red, file);
 		return;
 	}
 	
@@ -97,14 +98,11 @@ function parseDocComment(comment) {
 }
 
 function handleFile(file) {
-	console.log("\nFILE: ".magenta, file);
 	var content = fse.readFileSync(file, "utf8"),
 		comments = content.match(/\/\*doc\n(.|\n)*?\n\*\//g);
 
 	if ( comments ) {
-		comments.forEach(parseDocComment);
-	} else {
-		console.warn("No documentation comments found.".italic);
+		comments.forEach(parseDocComment, file);
 	}
 }
 
