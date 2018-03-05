@@ -102,7 +102,7 @@ function handleFile(file) {
 		comments = content.match(/\/\*doc\n(.|\n)*?\n\*\//g);
 
 	if ( comments ) {
-		comments.forEach(parseDocComment, file);
+		comments.forEach(c => parseDocComment(c, file));
 	}
 }
 
